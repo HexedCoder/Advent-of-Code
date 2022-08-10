@@ -1,116 +1,61 @@
-with open("input.txt", "r") as file:
-    lines = file.read().split("\n\n")
+def get_input():
+    with open("input.txt") as input:
+        line_input = input.readlines()
+    line_segments = []
+    for line in line_input:
+        line = line.split()
+        line.pop(1)
+        line_segments.append(line)
 
-bingo_cards = []
-bingo_nums = []
-winning_called_num_column = 0
-winning_called_num_row = 0
-winning_row = 0
-winning_column = 0
-winning_index = 9999
-winning_num = 5
+    return line_segments
+
+
+def build_plane():
+    new_plane = [0] * 1000
+    planes = [new_plane.copy() for _ in range(0, 1000)]
+
+    return planes
+
+
+def check_segments(line_segments, planes):
+    for line_segment in line_segments:
+        start_x, start_y = line_segment[0].split(",")
+        end_x, end_y = line_segment[1].split(",")
+        start_x, start_y, end_x, end_y = int(start_x), int(start_y), int(
+            end_x), int(end_y)
+
+        planes[start_x][start_y] += 1
+        distance = max(abs(start_x - end_x), abs(start_y - end_y))
+        for moves in range(0, distance):
+            if start_x < end_x:
+                start_x += 1
+            elif start_x > end_x:
+                start_x -= 1
+
+            if start_y < end_y:
+                start_y += 1
+            elif start_y > end_y:
+                start_y -= 1
+
+            planes[start_x][start_y] += 1
+
+    return planes
+
+
+def danger_spots(planes):
+    bad_spots = 0
+    for plane in planes:
+        for num in plane:
+            if num >= 2:
+                bad_spots += 1
+    print(bad_spots)
 
 
 def main():
-    global bingo_cards
-    global bingo_nums
-    index = 0
-    for card in lines:
-        card = card.lstrip()
-        if index == 0:
-            card = card.split(",")
-            for num in card:
-                bingo_nums.append(int(num))
-            index += 1
-            continue
-        card = card.replace("  ", " ").replace("\n ", "\n").split("\n")
-        card_line = []
-        for line in card:
-            card_num = []
-            line = line.split()
-            for num in line:
-                card_num.append([int(num), 0])
-            card_line.append(card_num)
-            bingo_cards.append(card_line)
-
-    for called in bingo_nums:
-        row_check(called)
-        column_check(called)
-    print()
-    print("Winning Row", winning_row, "Winning Number", winning_called_num_row)
-    total_count = 0
-    for line in bingo_cards[winning_row]:
-        for num in line:
-            if num[1] == 0:
-                total_count += num[0]
-    print(f'Row {total_count = }')
-    final_row = total_count * winning_called_num_row
-    final_column = total_count * winning_called_num_column
-    print(f'{final_row = }')
-    print(f'{final_column = }')
-
-
-def row_check(called):
-    global winning_called_num_row
-    global winning_num
-    global winning_row
-    global winning_index
-    for card in bingo_cards:
-        for line in card:
-            if winning_row != 0:
-                break
-            row_count = 0
-            for num in line:
-                if winning_row != 0:
-                    break
-                if num[0] == called:
-                    num[1] = 1
-                if num[1] == 1:
-                    row_count += 1
-                if row_count == winning_num:
-                    print()
-                    print("Winning Row", bingo_cards.index(card),
-                          "Winning Number",
-                          called)
-                    for line in card:
-                        print(line)
-                    winning_called_num_row = called
-                    winning_row = bingo_cards.index(card)
-                    break
-        # print()
-
-
-def column_check(called):
-    global winning_called_num_column
-    global winning_index
-    global winning_column
-    index_count = [0, 0, 0, 0, 0]
-    for card in bingo_cards:
-        for line in card:
-            if winning_column != 0:
-                break
-            index_ = 0
-            for num in line:
-                if winning_column != 0:
-                    break
-                if num[0] == called:
-                    num[1] = 1
-                if num[1] == 1:
-                    index_count[index_] += 1
-                for index in index_count:
-                    if winning_column != 0:
-                        break
-                    if index == winning_num:
-                        print()
-                        print("Winning Column", bingo_cards.index(card),
-                              "Winning Number",
-                              called)
-                        for line in card:
-                            print(line)
-                        winning_called_num_column = called
-                        winning_column = bingo_cards.index(card)
-                        break
-                index_ += 1
+    line_segments = get_input()
+    planes = build_plane()
+    planes = check_segments(line_segments, planes)
+    danger_spots(planes)
 
 
 if __name__ == "__main__":
