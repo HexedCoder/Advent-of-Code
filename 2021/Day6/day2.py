@@ -44,7 +44,7 @@ def main():
 
     fish_count = progress(current_fish)
 
-    print("Total fish after 256 days:", sum(fish_count))
+    print(f"Total fish after 256 days: {sum(fish_count):,}")
 
 
 if __name__ == "__main__":
