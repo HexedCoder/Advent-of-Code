@@ -11,24 +11,15 @@ def build_array(input_list):
     min_number = min(input_list)
     max_number = max(input_list)
 
-    step_array = []
-    move = 1
-    fuel = 0
-    moves = 1
-
-    for extra in range(max_number + 1):
-        fuel += (moves * extra + 1)
-        step_array.append(fuel)
-    moves += 1
-    move += 1
-
     for step in range(min_number, max_number + 1):
         total_fuel = 0
         for crab in input_list:
+            move = 1
 
             steps = abs(crab - step)
-            if steps != 0:
-                total_fuel += step_array[steps - 1]
+            total_fuel += sum([moves*move for moves in range(steps+1)])
+
+            move += 1
 
         cost_list.append(total_fuel)
 
