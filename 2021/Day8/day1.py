@@ -28,7 +28,7 @@ def main():
     output_values = get_input()
     unique_nums = check_unique(output_values)
 
-    print(len(unique_nums))
+    print("Unique Values:", len(unique_nums))
 
 
 if __name__ == "__main__":
