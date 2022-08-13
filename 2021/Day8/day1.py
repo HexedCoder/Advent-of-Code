@@ -2,28 +2,33 @@ def get_input():
     with open("input.txt") as file_input:
         input_lines = file_input.readlines()
 
-    return input_lines
+    output_values = []
+
+    for line in input_lines:
+        line = line[line.index("|") + 1:]
+        line = line.split()
+        output_values.append(line)
+
+    return output_values
 
 
-def build_array(input_list):
-    cost_list = []
-    input_list = [int(x) for x in input_list]
-    min_number = min(input_list)
-    max_number = max(input_list)
+def check_unique(values):
+    unique_nums = [2, 3, 4, 7]
+    all_values = [value for value_list in values for value in value_list]
+    unique_value_list = []
 
-    for step in range(min_number, max_number + 1):
-        fuel_cost = 0
-        for crab in input_list:
-            fuel_cost += abs(crab - step)
+    for value in all_values:
+        if len(value) in unique_nums:
+            unique_value_list.append(value)
 
-        cost_list.append(fuel_cost)
-
-    return cost_list
+    return unique_value_list
 
 
 def main():
-    segments = get_input()
-    calc_movement = build_array(segments)
+    output_values = get_input()
+    unique_nums = check_unique(output_values)
+
+    print(len(unique_nums))
 
 
 if __name__ == "__main__":
