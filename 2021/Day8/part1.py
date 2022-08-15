@@ -1,3 +1,4 @@
+
 def get_input():
     with open("input.txt") as file_input:
         input_lines = file_input.readlines()
