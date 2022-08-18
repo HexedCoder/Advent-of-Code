@@ -1,3 +1,8 @@
+width = 0
+bottom = 0
+_map = []
+
+
 def get_input():
     with open("input.txt") as file_input:
         lines_input = file_input.readlines()
@@ -79,77 +84,86 @@ def find_lows(height_list):
     return lows
 
 
-def basin_size(height_list, map):
-    width = 0
-    for line in map:
-        width = len(line)
-    basin_sizes = []
-    for basin in height_list:
-        x = basin[0]
-        y = basin[1]
-        size = 0
+def check(x, y):
+    global width, bottom, _map
+    points = []
+    x_temp = x
+    y_temp = y
 
-        if x == len(height_list):
+    print(f"({x=}, {y=})")
+    while x_temp < width:
+        x_temp += 1
+        if _map[y_temp][x_temp] != 9:
+            points.append((x_temp, y_temp))
+        else:
+            x_temp -= 1
             break
-        print(basin)
 
-        while y > 0:
-            print("a")
-            print(height_list[y][x])
+    x_temp = x
+    y_temp = y
+    while x_temp > 0:
+        x_temp -= 1
+        if _map[y_temp][x_temp] != 9:
+            points.append((x_temp, y_temp))
+        else:
+            x_temp += 1
+            break
 
-            if height_list[y][x] != 9:
-                size += 1
-                y -= 1
-            else:
-                break
-        print("Final size", size)
+    x_temp = x
+    y_temp = y
+    while y_temp > 0:
+        y_temp -= 1
+        if _map[y_temp][x_temp] != 9:
+            points.append((x_temp, y_temp))
+        else:
+            y_temp += 1
+            break
 
-        x = basin[0]
-        y = basin[1]
-        while y < len(map) - 1:
-            print("b")
+    x_temp = x
+    y_temp = y
+    while y_temp < bottom:
+        print(x_temp, y_temp)
+        print(bottom, width)
+        print(_map[y_temp+1][x_temp])
 
-            print(height_list[y][x])
+        y_temp += 1
+        if _map[y_temp][x_temp] != 9:
+            points.append((x_temp, y_temp))
+        else:
+            y_temp -= 1
+            break
 
-            if height_list[y][x] != 9:
-                size += 1
-                y += 1
-            else:
-                break
-        print("Final size", size)
+    return points
 
-        x = basin[0]
-        y = basin[1]
-        while x < width - 1:
-            print("c")
-            print(height_list[y][x])
 
-            if height_list[y][x] != 9:
-                size += 1
-                x += 1
-            else:
-                break
-        print("Final size", size)
+def basin_size(height_list, map_):
+    global width, bottom, _map
+    width = len(map_[1]) - 1
+    bottom = len(map_) - 1
+    _map = map_
+    basin_sizes = []
 
-        x = basin[0]
-        y = basin[1]
-        while x > 0:
-            print("d")
-            x -= 1
-            print(height_list[y][x])
-
-            if height_list[y][x] != 9:
-                size += 1
-            else:
-                break
-        print("Final size", size)
-
+    index = 0
+    for basin in height_list:
+        size = 0
+        result = check(basin[0], basin[1])
+        size += len(result)
+        for point in result:
+            print(point)
+            new_result = check(point[0], point[1])
+            for point in new_result:
+                if point not in result:
+                    result.append(point)
+                    print(point)
+                    size += 1
+        print("Size", size, index)
+        print()
         basin_sizes.append(size)
-        size += 1
+        index += 1
 
     basin_sizes.sort(reverse=True)
 
-    return basin_sizes[:4]
+    return basin_sizes
 
 
 def main():
@@ -157,15 +171,9 @@ def main():
     basin_points = find_lows(height_map)
     top_basin_sizes = basin_size(basin_points, height_map)
 
-    product = 0
-    index = 0
-    for basin in top_basin_sizes:
-        if index == 0:
-            product += basin
-            index += 1
-        product *= basin
+    product = top_basin_sizes[0] * top_basin_sizes[1] * top_basin_sizes[2]
 
-    print("Basin Size:", )
+    print("Basin Size:", product)
 
 
 if __name__ == "__main__":
