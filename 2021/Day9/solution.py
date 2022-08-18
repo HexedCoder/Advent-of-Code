@@ -23,65 +23,81 @@ def get_input():
 
 
 def find_lows(height_list):
-    lows = []
+    basin_coord = []
+    basin_nums = []
     y = 0
     for each_line in height_list:
         x = 0
         for number in each_line:
             if x == 0:
                 if y == 0:
-                    if height_list[y][x + 1] > number and height_list[y + 1][
-                        x] > number:
-                        lows.append((x, y))
+                    if height_list[y][x + 1] > number and \
+                            height_list[y + 1][x] > number:
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
 
                 elif y < len(height_list) - 1:
 
-                    if height_list[y][x + 1] > number and height_list[y - 1][
-                        x] > number and height_list[y + 1][x] > number:
-                        lows.append((x, y))
+                    if height_list[y][x + 1] > number and \
+                            height_list[y - 1][x] > number and \
+                            height_list[y + 1][x] > number:
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
                 else:
 
-                    if height_list[y][x + 1] > number and height_list[y - 1][
-                        x] > number:
-                        lows.append((x, y))
+                    if height_list[y][x + 1] > number and \
+                            height_list[y - 1][x] > number:
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
+
             elif x < len(each_line) - 1:
 
                 if y == 0:
-                    if height_list[y][x - 1] > number and height_list[y][
-                        x + 1] > number and height_list[y + 1][x] > number:
-                        lows.append((x, y))
+                    if height_list[y][x - 1] > number and \
+                            height_list[y][x + 1] > number and \
+                            height_list[y + 1][x] > number:
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
 
                 elif y < len(height_list) - 1:
-                    if height_list[y][x - 1] > number and height_list[y][
-                        x + 1] > number and height_list[y - 1][x] > number and \
+                    if height_list[y][x - 1] > number and \
+                            height_list[y][x + 1] > number and \
+                            height_list[y - 1][x] > number and \
                             height_list[y + 1][x] > number:
-                        lows.append((x, y))
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
 
                 elif y == len(height_list) - 1:
-                    if height_list[y][x - 1] > number and height_list[y][
-                        x + 1] > number and height_list[y - 1][x] > number:
-                        lows.append((x, y))
+                    if height_list[y][x - 1] > number and \
+                            height_list[y][x + 1] > number and \
+                            height_list[y - 1][x] > number:
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
 
             else:
                 if y == 0:
-                    if height_list[y][x - 1] > number and height_list[y + 1][
-                        x] > number:
-                        lows.append((x, y))
+                    if height_list[y][x - 1] > number and \
+                            height_list[y + 1][x] > number:
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
 
                 elif y < len(height_list) - 1:
-                    if height_list[y][x - 1] > number and height_list[y - 1][
-                        x] > number and height_list[y + 1][x] > number:
-                        lows.append((x, y))
+                    if height_list[y][x - 1] > number and \
+                            height_list[y - 1][x] > number and \
+                            height_list[y + 1][x] > number:
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
 
                 elif y == len(height_list) - 1:
-                    if height_list[y][x - 1] > number and height_list[y - 1][
-                        x] > number:
-                        lows.append((x, y))
+                    if height_list[y][x - 1] > number and \
+                            height_list[y - 1][x] > number:
+                        basin_coord.append((x, y))
+                        basin_nums.append(number + 1)
 
             x += 1
         y += 1
 
-    return lows
+    return basin_coord, basin_nums
 
 
 def check(x, y):
@@ -90,7 +106,6 @@ def check(x, y):
     x_temp = x
     y_temp = y
 
-    # print(f"({x=}, {y=})")
     while x_temp < width:
         x_temp += 1
         if _map[y_temp][x_temp] != 9:
@@ -145,15 +160,12 @@ def basin_size(height_list, map_):
         result = check(basin[0], basin[1])
         size += len(result)
         for point in result:
-            # print(point)
             new_result = check(point[0], point[1])
             for point in new_result:
                 if point not in result:
                     result.append(point)
-                    # print(point)
                     size += 1
-        # print("Size", size, index)
-        # print()
+
         basin_sizes.append(size)
         index += 1
 
@@ -164,12 +176,14 @@ def basin_size(height_list, map_):
 
 def main():
     height_map = get_input()
-    basin_points = find_lows(height_map)
+    basin_points, basin_nums = find_lows(height_map)
     top_basin_sizes = basin_size(basin_points, height_map)
 
     product = top_basin_sizes[0] * top_basin_sizes[1] * top_basin_sizes[2]
 
-    print("Basin Size:", product)
+    print("Part1 - Basin Sum:", sum(basin_nums))
+    print()
+    print("Part2 - Basin Size:", product)
 
 
 if __name__ == "__main__":
