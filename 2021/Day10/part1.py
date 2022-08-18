@@ -13,6 +13,7 @@ def main():
     symbol_lines = get_input()
     mismatched_symbol = ""
     for line in symbol_lines:
+
         print(line)
         mismatched_symbol = find_matches(line)
 
