@@ -38,8 +38,7 @@ def assess_cards(bingo_cards, bingo_nums):
         for card in bingo_cards:
             nums_called.append(current_num)
 
-            if row_check(nums_called, card) or column_check(nums_called,
-                                                            card):
+            if row_check(nums_called, card) or column_check(nums_called, card):
 
                 card_sum = check_sum(nums_called, card)
                 bingo_cards.remove(card)
@@ -86,7 +85,9 @@ def main():
     bingo_cards, bingo_nums = create_cards(file_input)
     winning_cards = assess_cards(bingo_cards, bingo_nums)
 
-    print(winning_cards[-1])
+    print("Part 1:", winning_cards[0])
+
+    print("Part 2:", winning_cards[-1])
 
 
 if __name__ == "__main__":
