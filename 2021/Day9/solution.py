@@ -4,7 +4,7 @@ _map = []
 
 
 def get_input():
-    with open("input.txt") as file_input:
+    with open("s_input.txt") as file_input:
         lines_input = file_input.readlines()
 
     list_int_input = []
