@@ -5,16 +5,6 @@ def get_input():
     return lines
 
 
-def main():
-    text_file = get_input()
-    increase_count1 = check_increase_part_1(text_file)
-    increase_count2 = check_increase_part_2(text_file)
-
-    print("Part 1:", increase_count1)
-    print()
-    print("Part 2:", increase_count2)
-
-
 def check_increase_part_1(lines):
     fwd = "forward"
     up = "up"
@@ -53,6 +43,16 @@ def check_increase_part_2(lines):
             aim += int(line[1])
 
     return depth * hor_pos
+
+
+def main():
+    text_file = get_input()
+    increase_count1 = check_increase_part_1(text_file)
+    increase_count2 = check_increase_part_2(text_file)
+
+    print("Part 1:", increase_count1)
+    print()
+    print("Part 2:", increase_count2)
 
 
 if __name__ == "__main__":

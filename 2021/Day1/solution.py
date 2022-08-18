@@ -30,7 +30,6 @@ def check_increase(lines):
         if current > previous:
             total_increase += 1
 
-
     line_count = 0
     # Part 2
     for _ in lines:
