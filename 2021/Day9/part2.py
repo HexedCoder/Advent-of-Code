@@ -90,7 +90,7 @@ def check(x, y):
     x_temp = x
     y_temp = y
 
-    print(f"({x=}, {y=})")
+    # print(f"({x=}, {y=})")
     while x_temp < width:
         x_temp += 1
         if _map[y_temp][x_temp] != 9:
@@ -122,10 +122,6 @@ def check(x, y):
     x_temp = x
     y_temp = y
     while y_temp < bottom:
-        print(x_temp, y_temp)
-        print(bottom, width)
-        print(_map[y_temp+1][x_temp])
-
         y_temp += 1
         if _map[y_temp][x_temp] != 9:
             points.append((x_temp, y_temp))
@@ -149,15 +145,15 @@ def basin_size(height_list, map_):
         result = check(basin[0], basin[1])
         size += len(result)
         for point in result:
-            print(point)
+            # print(point)
             new_result = check(point[0], point[1])
             for point in new_result:
                 if point not in result:
                     result.append(point)
-                    print(point)
+                    # print(point)
                     size += 1
-        print("Size", size, index)
-        print()
+        # print("Size", size, index)
+        # print()
         basin_sizes.append(size)
         index += 1
 
