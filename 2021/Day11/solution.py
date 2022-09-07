@@ -22,7 +22,34 @@ def get_input():
 
 
 def main():
-    part_1()
+    global flash_day
+    file_input = get_input()
+
+    for day in range(1, 1000):
+        row = 0
+        non_flash = True
+
+        for line in file_input:
+            increment(line)
+
+        while non_flash:
+            for line in file_input:
+                check(line, row, file_input)
+                non_flash = check_each(file_input)
+                row += 1
+
+        reset(file_input)
+
+        if day == 100:
+            print("Part 1:", flash_count)
+
+        sum_list = 0
+        for list in file_input:
+            sum_list += sum(list)
+
+        if not sum_list:
+            print("Part 2:", day)
+            break
 
 
 def increment(line):
@@ -69,36 +96,6 @@ def reset(file_input):
             if file_input[row][column] == -1:
                 file_input[row][column] += 1
 
-
-def part_1():
-    global flash_day
-    file_input = get_input()
-
-    for day in range(1, 1000):
-        row = 0
-        non_flash = True
-
-        for line in file_input:
-            increment(line)
-
-        while non_flash:
-            for line in file_input:
-                check(line, row, file_input)
-                non_flash = check_each(file_input)
-                row += 1
-
-        reset(file_input)
-
-        if day == 100:
-            print("Part 1:",flash_count)
-
-        sum_list = 0
-        for list in file_input:
-            sum_list += sum(list)
-
-        if not sum_list:
-            print("Part 2:", day)
-            break
 
 
 if __name__ == "__main__":
