@@ -99,4 +99,10 @@ def reset(file_input):
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (SystemExit, KeyboardInterrupt, GeneratorExit, Exception) as err:
+        print("Error: ", err)
+        print("Error.__cause__", err.__cause__)
+        print("Error.__class__", err.__class__.__name__)
+        print("Error.with_traceback", err.with_traceback)
