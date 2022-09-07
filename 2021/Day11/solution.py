@@ -61,13 +61,13 @@ def flash(row_input, column_input, file_input):
     global flash_count
     for row in range(row_input - 1, row_input + 2):
         for column in range(column_input - 1, column_input + 2):
-                if (row >= 0 and column >= 0) and (row <= 9 and column <= 9):
-                    if file_input[row][column] != -1:
-                        file_input[row][column] += 1
-                        if file_input[row][column] > 9:
-                            file_input[row][column] = -1
-                            flash_count += 1
-                            flash(row, column, file_input)
+            if (row >= 0 and column >= 0) and (row <= 9 and column <= 9):
+                if file_input[row][column] != -1:
+                    file_input[row][column] += 1
+                    if file_input[row][column] > 9:
+                        file_input[row][column] = -1
+                        flash_count += 1
+                        flash(row, column, file_input)
 
 
 def check(line, row, file_input):
@@ -95,7 +95,6 @@ def reset(file_input):
         for column in range(0, len(file_input)):
             if file_input[row][column] == -1:
                 file_input[row][column] += 1
-
 
 
 if __name__ == "__main__":
