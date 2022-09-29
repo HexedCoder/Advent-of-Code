@@ -21,7 +21,7 @@ def make_dict(file_input):
         cave_dict[line[1]].append(line[0])
 
 
-def dfs(current_vertex, track, small_caves, part_2):
+def dfs(current_vertex, track, small_caves_entered=False, part_2=False):
     global cave_dict
     global lap_count
     track = f"{track} {current_vertex}"
@@ -32,12 +32,12 @@ def dfs(current_vertex, track, small_caves, part_2):
                 if vertex != "start":
                     if part_2:
                         if vertex not in track or vertex.isupper():
-                            dfs(vertex, track, small_caves, 1)
-                        elif small_caves == 0:
-                            dfs(vertex, track, small_caves + 1, 1)
+                            dfs(vertex, track, small_caves_entered, part_2=True)
+                        elif small_caves_entered == 0:
+                            dfs(vertex, track, small_caves_entered=True, part_2=True)
                     else:
                         if vertex not in track or vertex.isupper():
-                            dfs(vertex, track, small_caves, 0)
+                            dfs(vertex, track)
 
     else:
         lap_count += 1
@@ -49,14 +49,23 @@ def main():
     file_input = get_input()
     make_dict(file_input)
 
-    dfs("start", "", 0, False)
-    print("Part One:", lap_count)
+    start_vertex = "start"
+    start_track = ""
+
+    dfs(start_vertex, start_track)
+    print(f"Part One: {lap_count:,}")
 
     lap_count = 0
 
-    dfs("start", "", 0, 1)
-    print("Part Two", lap_count)
+    dfs(start_vertex, start_track, part_2=True)
+    print(f"Part Two: {lap_count:,}")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (SystemExit, KeyboardInterrupt, GeneratorExit, Exception) as err:
+        print("Error: ", err)
+        print("Error.__cause__", err.__cause__)
+        print("Error.__class__", err.__class__.__name__)
+        print("Error.with_traceback", err.with_traceback)
