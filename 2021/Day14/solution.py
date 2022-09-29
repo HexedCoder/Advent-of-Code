@@ -19,14 +19,14 @@ def main():
 
     count = 10
     new_template = get_template(insertion_rules, polymer_template, count)
-    min, max = get_count(new_template)
-    print("Part One:", max - min)
+    min_count, max_count = get_count(new_template)
+    print("Part One:", max_count - min_count)
     print()
 
     count = 20
     new_template = get_template(insertion_rules, polymer_template, count)
-    min, max = get_count(new_template)
-    print("Part Two:", max - min)
+    min_count, max_count = get_count(new_template)
+    print("Part Two:", max_count - min_count)
 
 
 def get_count(new_template):
