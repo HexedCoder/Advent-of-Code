@@ -1,67 +1,83 @@
 def get_input():
-    with open("s_input.txt") as file_input:
+    with open("input.txt") as file_input:
         lines_input = file_input.readlines()
 
     polymer_template = lines_input[0].replace("\n", "")
 
     insertion_rules = {}
+    insertion_count = {}
 
     for line in lines_input:
         if "->" in line:
             line = (line.replace("\n", "").split(" -> "))
-            insertion_rules[line[0]] = line[1]
+            if line[0] not in insertion_rules:
+                insertion_rules[line[0]] = []
+            string1 = f"{line[0][0]}{line[1]}"
+            string2 = f"{line[1]}{line[0][1]}"
+            string3 = f"{line[1]}"
 
-    return polymer_template, insertion_rules
+            insertion_rules[line[0]].append(string1)
+            insertion_rules[line[0]].append(string2)
+            insertion_rules[line[0]].append(string3)
+
+    for key in insertion_rules.keys():
+        insertion_count[key] = 0
+
+    return polymer_template, insertion_rules, insertion_count
 
 
 def main():
-    polymer_template, insertion_rules = get_input()
+    polymer_template, insertion_rules, insertion_count = get_input()
 
-    count = 10
-    new_template = get_template(insertion_rules, polymer_template, count)
-    min_count, max_count = get_count(new_template)
-    print("Part One:", max_count - min_count)
-    print()
-
-    count = 20
-    new_template = get_template(insertion_rules, polymer_template, count)
-    min_count, max_count = get_count(new_template)
-    print("Part Two:", max_count - min_count)
+    get_template(polymer_template, insertion_rules, insertion_count)
 
 
-def get_count(new_template):
-    letter_dict = {}
-    for char in new_template:
-        if char not in letter_dict:
-            letter_dict[char] = 1
-        else:
-            letter_dict[char] += 1
+def step_through(insertion_rules, insertion_count, letters):
+    for step in range(2, 41):
+        values = [value for value in insertion_count.values()]
 
-    return min(letter_dict.values()), max(letter_dict.values())
+        index = 0
+        for key in insertion_count.keys():
+            count = values[index]
+
+            insertion_count[key] -= count
+            for value in insertion_rules[key]:
+                if len(value) == 2:
+                    insertion_count[value] += count
+                else:
+                    letters[value] += count
+
+            index += 1
+
+        if step == 10:
+            minimum = min(letters.values())
+            maximum = max(letters.values())
+            print("Part 1:", maximum - minimum)
+        if step == 40:
+            minimum = min(letters.values())
+            maximum = max(letters.values())
+            print("Part 2:", maximum - minimum)
 
 
-def get_template(insertion_rules, polymer_template, iter_count):
-    new_template = ""
-    for step in range(1, iter_count + 1):
-        new_template = ""
-        previous_char = ""
-        for char in polymer_template:
-            if previous_char == "":
-                previous_char = char
-                continue
+def get_template(polymer_template, insertion_rules, insertion_count):
+    letters = {}
 
-            curr = f"{previous_char}{char}"
-            new_char = insertion_rules[curr]
+    for key in insertion_rules.keys():
+        letters[key[0]] = 0
 
-            new_template = f"{new_template}{previous_char}{new_char}"
+    for letter in polymer_template:
+        letters[letter] += 1
 
-            previous_char = char
+    for current in range(0, len(polymer_template) - 1):
+        index = polymer_template[current:current + 2]
 
-        new_template = f"{new_template}{previous_char}"
-        print("Step", step)
+        for value in insertion_rules[index]:
+            if len(value) != 1:
+                insertion_count[value] += 1
+            else:
+                letters[value] += 1
 
-        polymer_template = new_template
-    return new_template
+    step_through(insertion_rules, insertion_count, letters)
 
 
 if __name__ == "__main__":
