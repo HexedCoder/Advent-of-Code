@@ -26,10 +26,35 @@ def get_input():
     return polymer_template, insertion_rules, insertion_count
 
 
-def main():
-    polymer_template, insertion_rules, insertion_count = get_input()
+def build_template(polymer_template, insertion_rules, insertion_count):
 
-    get_template(polymer_template, insertion_rules, insertion_count)
+    letters = initialize_letters(insertion_rules, polymer_template)
+
+    initialize_insertion_count(insertion_count, insertion_rules, letters,
+                               polymer_template)
+
+    step_through(insertion_rules, insertion_count, letters)
+
+
+def initialize_insertion_count(insertion_count, insertion_rules, letters,
+                               polymer_template):
+    for current in range(0, len(polymer_template) - 1):
+        index = polymer_template[current:current + 2]
+
+        for value in insertion_rules[index]:
+            if len(value) != 1:
+                insertion_count[value] += 1
+            else:
+                letters[value] += 1
+
+
+def initialize_letters(insertion_rules, polymer_template):
+    letters = {}
+    for key in insertion_rules.keys():
+        letters[key[0]] = 0
+    for letter in polymer_template:
+        letters[letter] += 1
+    return letters
 
 
 def step_through(insertion_rules, insertion_count, letters):
@@ -50,34 +75,21 @@ def step_through(insertion_rules, insertion_count, letters):
             index += 1
 
         if step == 10:
-            minimum = min(letters.values())
-            maximum = max(letters.values())
-            print("Part 1:", maximum - minimum)
+            get_count(letters, "Part 1")
         if step == 40:
-            minimum = min(letters.values())
-            maximum = max(letters.values())
-            print("Part 2:", maximum - minimum)
+            get_count(letters, "Part 2")
 
 
-def get_template(polymer_template, insertion_rules, insertion_count):
-    letters = {}
+def get_count(letters, part_num):
+    maximum = max(letters.values())
+    minimum = min(letters.values())
+    print(f"{part_num}:", maximum - minimum)
 
-    for key in insertion_rules.keys():
-        letters[key[0]] = 0
 
-    for letter in polymer_template:
-        letters[letter] += 1
+def main():
+    polymer_template, insertion_rules, insertion_count = get_input()
 
-    for current in range(0, len(polymer_template) - 1):
-        index = polymer_template[current:current + 2]
-
-        for value in insertion_rules[index]:
-            if len(value) != 1:
-                insertion_count[value] += 1
-            else:
-                letters[value] += 1
-
-    step_through(insertion_rules, insertion_count, letters)
+    build_template(polymer_template, insertion_rules, insertion_count)
 
 
 if __name__ == "__main__":
