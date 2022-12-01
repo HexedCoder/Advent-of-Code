@@ -5,53 +5,23 @@ def get_input():
 
 def main():
     text_file = get_input()
-    total_increase, increase_count = check_increase(text_file)
+    loads = []
 
-    print("Part 1: ", total_increase)
-    print("Part 2: ", increase_count)
+    curr = 0
+    for line in text_file:
+        if line == '':
+            loads.append(curr)
+            curr = 0
+        else:
+            curr += int(line)
 
+    loads.sort(reverse=True)
+    print(loads)
 
-def check_increase(lines):
-    current = 0
-    line_count = 0
-    increase_count = 0
-    total_increase = 0
-    sum_list = []
-    # Part 1
-    for line in lines:
+    loads = [loads[num] for num in range(3)]
 
-        line = int(line)
-        if line_count == 0:
-            current = line
-            line_count += 1
-
-        previous = current
-        current = line
-        if current > previous:
-            total_increase += 1
-
-    line_count = 0
-    # Part 2
-    for _ in lines:
-
-        if line_count < len(lines) - 2:
-            line_sum = int(lines[line_count]) + int(lines[line_count + 1]) + \
-                       int(lines[line_count + 2])
-            sum_list.append(line_sum)
-            line_count += 1
-
-    line_count = 0
-    for cur_sum in sum_list:
-        cur_sum = int(cur_sum)
-        if line_count == 0:
-            current = cur_sum
-            line_count += 1
-            continue
-        previous = current
-        current = cur_sum
-        if current > previous:
-            increase_count += 1
-    return total_increase, increase_count
+    print("Part 1: ", loads[0])
+    print("Part 2: ", sum(loads))
 
 
 if __name__ == "__main__":
