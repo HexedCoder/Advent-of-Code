@@ -1,27 +1,22 @@
-def get_input():
-    text_file = open("input.txt", "r").read().split("\n")
-    return text_file
-
+#!/usr/bin/env python3
 
 def main():
-    text_file = get_input()
-    loads = []
+    everyone = []
+    total = 0
+    file_name = "input.txt"
+    lines = (line for line in open(file_name))
 
-    curr = 0
-    for line in text_file:
-        if line == '':
-            loads.append(curr)
-            curr = 0
-        else:
-            curr += int(line)
+    while True:
+        try:
+            total += int(next(lines))
+        except ValueError:
+            everyone.append(total)
+            total = 0
+        except StopIteration:
+            everyone = sorted(everyone, reverse=True)[:3]
+            break
 
-    loads.sort(reverse=True)
-    print(loads)
-
-    loads = [loads[num] for num in range(3)]
-
-    print("Part 1: ", loads[0])
-    print("Part 2: ", sum(loads))
+    print("Part 1", everyone[0], "\nPart 2", sum(everyone))
 
 
 if __name__ == "__main__":
