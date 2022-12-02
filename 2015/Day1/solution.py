@@ -5,24 +5,30 @@ def get_input():
 
 def main():
     text_file = get_input()
-    get_count = check_increase(text_file)
+    outcome, first = track_santa(text_file)
 
-    print(get_count)
+    print("Part 1:", outcome)
+    print("Part 2:", first)
 
 
-def check_increase(text_file):
+def track_santa(text_file):
     number = 0
-    index = 0
+    index = 1
+    first = [0, 0]
+
     for char in text_file:
-        if number == -1:
-            print(index)
         if char == "(":
             number += 1
         elif char == ")":
             number -= 1
+
+        if number < 0 and not first[0]:
+            first[0] = 1
+            first[1] = index
+
         index += 1
 
-    return number
+    return number, first[1]
 
 
 if __name__ == "__main__":
