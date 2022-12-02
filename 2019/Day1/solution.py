@@ -6,8 +6,10 @@ def get_input():
 def main():
     text_file = get_input()
 
-    part_one(text_file)
-    part_two(text_file)
+    total = part_one(text_file)
+    print("Part 1:", total)
+    total = part_two(text_file)
+    print("Part 2:", total)
 
 
 def part_one(text_file):
@@ -15,38 +17,28 @@ def part_one(text_file):
     total = 0
 
     for line in text_file:
-        symbol = line[0]
-        vector = int(line[1:])
+        line = int(line)
 
-        if "+" == symbol:
-            total += vector
-        elif "-" == symbol:
-            total -= vector
+        total += line // 3 - 2
 
-    print("Part 1:", total)
+    return total
 
 
 def part_two(text_file):
-    totals = []
     total = 0
-    repeat = 0
 
-    while not repeat:
-        for line in text_file:
-            symbol = line[0]
-            vector = int(line[1:])
+    for line in text_file:
+        num = int(line)
 
-            if "+" == symbol:
-                total += vector
-            elif "-" == symbol:
-                total -= vector
+        while True:
+            num = num // 3 - 2
 
-            if total in totals:
-                repeat = total
+            if num <= 0:
                 break
-            totals.append(total)
 
-    print("Part 2:", total)
+            total += num
+
+    return total
 
 
 if __name__ == "__main__":
