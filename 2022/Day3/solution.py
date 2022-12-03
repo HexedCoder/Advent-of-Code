@@ -29,9 +29,10 @@ def part_one(values, text_file):
 
         char = list(set_1.intersection(set_2))[0]
 
-        if char.isupper():
-            score += 26
-        score += values[char.lower()]
+        try:
+            score += values[char]
+        except:
+            score += values[char.lower()] + 26
 
     return score
 
@@ -49,11 +50,12 @@ def part_two(values, text_file):
         if 0 == line_count:
             lines = my_set
         else:
-            lines = my_set.intersection(lines)
+            lines = list(my_set.intersection(lines))
             if 2 == line_count:
-                if list(lines)[0].isupper():
-                    score += 26
-                score += values[list(lines)[0].lower()]
+                try:
+                    score += values[lines[0]]
+                except:
+                    score += values[lines[0].lower()] + 26
 
         line_count += 1
 
