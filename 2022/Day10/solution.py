@@ -1,6 +1,22 @@
 def get_input():
-    text_file = open("input", "r").read().split("\n")
+    text_file = open("input", "r").read().splitlines()
     return text_file
+
+
+def check_cpu(x, sig_str):
+    if x in range(20, 221, 40):
+        return x * sig_str
+
+    else:
+        return 0
+
+
+def check_grid(x, cycle, grid):
+    choices = [x - 1, x, x + 1]
+
+    crt = (cycle - 1) % 40
+    if crt in choices:
+        grid[cycle - 1] = '#'
 
 
 def main():
@@ -10,51 +26,58 @@ def main():
     print("Part 1:", score_1)
 
     score_2 = part_two(text_file)
-    print("Part 2:", score_2)
+
+    print("Part 2:")
+    num = 1
+    for char in score_2:
+        print(char, end='')
+        if num % 40 == 0:
+            print()
+        num += 1
 
 
 def part_one(text_file):
-    contained = 0
-    assignment = []
-
-    total = 0
-    curr_reg = 0
-    for line, val in enumerate(text_file):
+    x = 1
+    sig_str = 0
+    cycle = 0
+    for val in text_file:
         val = val.split()
+
         if val and 'addx' == val[0]:
-            val[1] = int(val[1])
-            if curr_reg < 20 <= curr_reg + val[1]:
-                print(curr_reg, total)
-                total += line * val[1]
-            if curr_reg < 60 <= curr_reg + val[1]:
-                print(curr_reg, total)
-                total += line * val[1]
-            if curr_reg < 1000 <= curr_reg + val[1]:
-                print(curr_reg, total)
-                total += line * val[1]
-            if curr_reg < 140 <= curr_reg + val[1]:
-                print(curr_reg, total)
-                total += line * val[1]
-            if curr_reg < 180 <= curr_reg + val[1]:
-                print(curr_reg, total)
-                total += line * val[1]
-            if curr_reg < 220 <= curr_reg + val[1]:
-                print(curr_reg, total)
-                total += line * val[1]
-            curr_reg += val[1]
+            cycle += 1
+            sig_str += check_cpu(cycle, x)
+            cycle += 1
+            sig_str += check_cpu(cycle, x)
+            x += int(val[1])
 
-        # else:
-        #     curr_reg += 1
+        elif 'noop' == val[0]:
+            cycle += 1
+            sig_str += check_cpu(cycle, x)
 
-    print(total)
-
-    return contained
+    return sig_str
 
 
 def part_two(text_file):
-    overlap = 0
 
-    return overlap
+    grid = list('.' * 240)
+    x = 1
+    cycle = 0
+
+    for val in text_file:
+        val = val.split()
+
+        if val and 'addx' == val[0]:
+            cycle += 1
+            check_grid(x, cycle, grid)
+            cycle += 1
+            check_grid(x, cycle, grid)
+            x += int(val[1])
+
+        elif 'noop' == val[0]:
+            cycle += 1
+            check_grid(x, cycle, grid)
+
+    return grid
 
 
 if __name__ == "__main__":
