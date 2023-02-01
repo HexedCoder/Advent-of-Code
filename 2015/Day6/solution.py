@@ -2,14 +2,9 @@ import copy
 
 
 def get_input():
-    text_file = open("input", "r").read().split("\n")
+    text_file = open("input").readlines()
 
-    grid = []
-    for _ in range(1000):
-        line = []
-        for _ in range(1000):
-            line.append(0)
-        grid.append(line)
+    grid = [[0 for _ in range(1000)] for _ in range(1000)]
 
     return grid, text_file
 
@@ -28,7 +23,7 @@ def main():
 def part_one(grid, file_input):
     for line in file_input:
         line = line.split()
-        cmd = line[1]
+        cmd = line[-4]
         begin_x, begin_y = map(int, (line[-3].split(',')))
         end_x, end_y = map(int, line[-1].split(','))
 
@@ -37,8 +32,8 @@ def part_one(grid, file_input):
                 if 'on' == cmd:
                     grid[y][x] = True
                 elif 'off' == cmd:
-                        grid[y][x] = False
-                else:
+                    grid[y][x] = False
+                elif 'toggle' == cmd:
                     grid[y][x] = not grid[y][x]
 
     return sum(sum(n) for n in grid)
