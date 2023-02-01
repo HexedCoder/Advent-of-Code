@@ -3,7 +3,7 @@ lap_count = 0
 
 
 def get_input():
-    with open("input.txt") as file_input:
+    with open("input") as file_input:
         lines_input = file_input.readlines()
 
     return lines_input

@@ -1,5 +1,5 @@
 def get_input():
-    text_file = open("input", "r").read()
+    text_file = open('puzzle_input').read()
 
     return text_file
 
@@ -14,21 +14,21 @@ def main():
     print("Part 2:", output)
 
 
-def part_one(input):
-    length = len(input)
+def part_one(puzzle_input):
+    length = len(puzzle_input)
 
     for num in range(0, length - 4):
-        chars = set(input[num:num + 4])
+        chars = set(puzzle_input[num:num + 4])
 
         if len(chars) == 4:
             return num + 4
 
 
-def part_two(input):
-    length = len(input)
+def part_two(puzzle_input):
+    length = len(puzzle_input)
 
     for num in range(0, length - 14):
-        chars = set(input[num:num + 14])
+        chars = set(puzzle_input[num:num + 14])
 
         if len(chars) == 14:
             return num + 14

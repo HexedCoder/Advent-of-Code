@@ -1,5 +1,5 @@
 def get_input():
-    with open("input.txt") as file_input:
+    with open("input") as file_input:
         line_input = file_input.read().split(",")
 
     line_input = [int(x) for x in line_input]

@@ -1,9 +1,8 @@
 from collections import defaultdict
-import re
 
 
 def get_input():
-    text_file = open("input", "r").read().split("\n")
+    text_file = open("input", "r").readlines()
 
     return text_file
 
@@ -35,7 +34,6 @@ def part_one(input):
 
     for key in dir_dict.values():
         totals.append(key)
-    print(len(dirs))
     total = 0
     for num in totals:
         if num <= 100000:

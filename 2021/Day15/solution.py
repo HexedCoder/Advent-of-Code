@@ -2,7 +2,7 @@ import heapq
 
 
 def get_input_1():
-    with open("input.txt") as file_input:
+    with open("input") as file_input:
         lines_input = file_input.read().split("\n")
 
     grid = []
@@ -15,7 +15,7 @@ def get_input_1():
 
 
 def get_input_2():
-    with open("input.txt") as file_input:
+    with open("input") as file_input:
         lines_input = file_input.read().split("\n")
 
     grid = []

@@ -2,7 +2,7 @@ index = 1
 
 
 def get_input():
-    with open("input.txt") as file_input:
+    with open("input") as file_input:
         input_lines = file_input.readlines()
 
     normal_values = []
@@ -115,11 +115,9 @@ def get_unique(values):
 
 def get_number(key_list: list, output_values: list):
     global index
-    print(index, key_list)
     index += 1
     output_num = ""
     for output_value_list in output_values:
-        print(output_value_list)
         output_num += str(key_list.index(output_value_list))
     output_num = int(output_num)
 
@@ -140,8 +138,7 @@ def main():
     new_sum = 0
     for value in range(0, len(normal_values)):
         new_sum += decipher_nums(output_values[value], normal_values[value])
-    print()
-    print("Final Sum:", new_sum)
+    print("Part 2:", new_sum)
 
 
 if __name__ == "__main__":

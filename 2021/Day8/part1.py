@@ -1,6 +1,6 @@
 
 def get_input():
-    with open("input.txt") as file_input:
+    with open("input") as file_input:
         input_lines = file_input.readlines()
 
     output_values = []
@@ -29,7 +29,7 @@ def main():
     output_values = get_input()
     unique_nums = check_unique(output_values)
 
-    print("Unique Values:", len(unique_nums))
+    print("Part 1:", len(unique_nums))
 
 
 if __name__ == "__main__":

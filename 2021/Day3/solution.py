@@ -1,4 +1,4 @@
-with open("input.txt", "r") as file:
+with open('input') as file:
     # Sample - 110000000001
     lines = file.readlines()
 
@@ -7,7 +7,7 @@ co2_lines = [line.replace("\n", "") for line in lines]
 
 
 def get_input():
-    with open("input.txt", "r") as file:
+    with open('input', "r") as file:
         # Sample - 110000000001
         lines = file.readlines()
 
@@ -123,9 +123,8 @@ def main():
 
     life_support_rating = oxygen_generator_rating * co2_scrubber_rating
 
-    print(f'Part 1: {power_consumption = }')
-    print()
-    print(f'Part 2: {life_support_rating = }')
+    print(f'Part 1: {power_consumption}')
+    print(f'Part 2: {life_support_rating}')
 
 
 if __name__ == "__main__":

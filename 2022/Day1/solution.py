@@ -3,7 +3,7 @@
 def main():
     everyone = []
     total = 0
-    file_name = "input.txt"
+    file_name = "input"
     lines = (line for line in open(file_name))
 
     while True:

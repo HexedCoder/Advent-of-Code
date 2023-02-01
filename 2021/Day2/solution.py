@@ -1,5 +1,5 @@
 def get_input():
-    with open("input.txt", "r") as file_input:
+    with open('input') as file_input:
         lines = file_input.readlines()
 
     return lines
@@ -51,7 +51,6 @@ def main():
     increase_count2 = check_increase_part_2(text_file)
 
     print("Part 1:", increase_count1)
-    print()
     print("Part 2:", increase_count2)
 
 

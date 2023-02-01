@@ -1,5 +1,5 @@
 def get_input():
-    with open("input.txt") as input:
+    with open('input') as input:
         line_input = input.readlines()
     line_segments = []
     for line in line_input:
@@ -86,7 +86,6 @@ def main():
     planes2 = check_segments_part_2(line_segments, planes2)
 
     print("Part 1:", danger_spots(planes1))
-    print()
     print("Part 2:", danger_spots(planes2))
 
 

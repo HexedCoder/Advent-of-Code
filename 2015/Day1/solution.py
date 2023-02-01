@@ -1,5 +1,5 @@
 def get_input():
-    text_file = open("input.txt", "r").read()
+    text_file = open('input', "r").read()
     return text_file
 
 

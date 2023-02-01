@@ -4,7 +4,7 @@ _map = []
 
 
 def get_input():
-    with open("input.txt") as file_input:
+    with open('input') as file_input:
         lines_input = file_input.readlines()
 
     list_int_input = []
@@ -181,9 +181,8 @@ def main():
 
     product = top_basin_sizes[0] * top_basin_sizes[1] * top_basin_sizes[2]
 
-    print("Part1 - Basin Sum:", sum(basin_nums))
-    print()
-    print("Part2 - Basin Size:", product)
+    print("Part 1:", sum(basin_nums))
+    print("Part 2:", product)
 
 
 if __name__ == "__main__":
