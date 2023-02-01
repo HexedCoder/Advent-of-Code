@@ -20,4 +20,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (SystemExit, KeyboardInterrupt, GeneratorExit, Exception) as err:
+        from traceback import print_exc
+        print_exc()

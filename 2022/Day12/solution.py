@@ -18,7 +18,6 @@ def distance(grid, row, column):
 
         for neighbor in neighbors:
             if 0 <= neighbor[0] < len(grid) and 0 <= neighbor[1] < len(grid[0]):
-                if 0 <= curr_row < len(grid) and 0 <= curr_column < len(grid[0]):
 
                     if grid[neighbor[0]][neighbor[1]] == 'E' and ord('z') - ord(grid[curr_row][curr_column]) <= 1:
                         queue.append((neighbor[0], neighbor[1], 1 + distance))
