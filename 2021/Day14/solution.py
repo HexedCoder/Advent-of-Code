@@ -76,16 +76,11 @@ def step_through(rules, value_count, letters):
     return part_1, part_2
 
 
-def build_template(template, rules, value_count):
-    letters = init_letters(rules, template)
-    init_insert_count(value_count, rules, letters, template)
-
-    return step_through(rules, value_count, letters)
-
-
 def main():
     template, rules, value_count = get_input()
-    part_1, part_2 = build_template(template, rules, value_count)
+    letters = init_letters(rules, template)
+    init_insert_count(value_count, rules, letters, template)
+    part_1, part_2 = step_through(rules, value_count, letters)
 
     print(f"Part 1: {part_1}")
     print(f"Part 2: {part_2}")
