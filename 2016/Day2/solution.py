@@ -18,25 +18,22 @@ def part_one(text_file):
 
     code = ''
     edge = len(grid[0]) - 1
+    EOF = len(text_file)
 
     # starting_location [1,1]
     x = 1
     y = 1
-    for direction in text_file:
-
-        match direction:
-            case 'U':
-                x = x - 1 if x > 0 else 0
-            case 'D':
-                x = x + 1 if x < edge else edge
-            case 'L':
-                y = y - 1 if y > 0 else 0
-            case 'R':
-                y = y + 1 if y < edge else edge
-            case '\n':
-                code += grid[x][y]
-
-    code += grid[x][y]
+    for idx, direction in enumerate(text_file, 1):
+        if 'U' == direction:
+            x = x - 1 if x > 0 else 0
+        if 'D' == direction:
+            x = x + 1 if x < edge else edge
+        if 'L' == direction:
+            y = y - 1 if y > 0 else 0
+        if 'R' == direction:
+            y = y + 1 if y < edge else edge
+        if '\n' == direction or EOF == idx:
+            code += grid[x][y]
 
     return code
 
@@ -46,24 +43,22 @@ def part_two(text_file):
 
     code = ''
     edge = len(grid[0]) - 1
+    EOF = len(text_file)
 
     # starting_location [1,1]
     x = 2
     y = 0
-    for direction in text_file:
-        match direction:
-            case 'U':
-                x = x - 1 if (x > 0 and grid[x-1][y]) else x
-            case 'D':
-                x = x + 1 if (x < edge and grid[x+1][y]) else x
-            case 'L':
-                y = y - 1 if (y > 0 and grid[x][y-1]) else y
-            case 'R':
-                y = y + 1 if (y < edge and grid[x][y+1]) else y
-            case '\n':
-                code += grid[x][y]
-
-    code += grid[x][y]
+    for idx, direction in enumerate(text_file, 1):
+        if 'U' == direction:
+            x = x - 1 if (x > 0 and grid[x-1][y]) else x
+        if 'D' == direction:
+            x = x + 1 if (x < edge and grid[x+1][y]) else x
+        if 'L' == direction:
+            y = y - 1 if (y > 0 and grid[x][y-1]) else y
+        if 'R' == direction:
+            y = y + 1 if (y < edge and grid[x][y+1]) else y
+        if '\n' == direction or EOF == idx:
+            code += grid[x][y]
 
     return code
 
