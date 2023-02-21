@@ -4,7 +4,6 @@ import copy
 def get_input():
     with open('input') as f:
         file_input = [piece for piece in [line.replace('@', '').split() for line in f.read().split('\n') if line]]
-        f.seek(0)
 
     height = 0
     width = 0
