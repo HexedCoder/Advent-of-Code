@@ -1,44 +1,42 @@
 def get_input():
-    text_file = open('input').readlines()
+    text_file = open('input').read()
     return text_file
 
 
 def main():
     text_file = get_input()
 
-    total = 0
-    curr = 0
-
-    for line in text_file:
-        for num in line:
-            num = int(num)
-            prev = curr
-            curr = num
-
-            if prev == curr:
-                total += num
-
-        if curr == int(line[0]):
-            total += curr
-
+    total = part_one(text_file)
     print("Part 1:", total)
-
-    total = 0
-    idx = 0
-
-    for line in text_file:
-        index = int(len(line)/2)
-
-        for num in line:
-            num = int(num)
-            cmp = int(line[idx - index])
-
-            if num == cmp:
-                total += num
-
-            idx += 1
-
+    total = part_two(text_file)
     print("Part 2:", total)
+
+
+def part_one(text_file):
+    total = 0
+    file_len = len(text_file) - 1
+
+    for num in range(file_len):
+        if 1 == len(set(text_file[num:num+2])):
+            total += int(text_file[num])
+
+    if text_file[-1] == text_file[0]:
+        total += int(text_file[0])
+
+    return total
+
+
+def part_two(text_file):
+    total = 0
+    file_len = len(text_file)
+    loop = len(text_file) // 2
+
+    for idx in range(file_len):
+        next_cmp = idx - loop
+        if text_file[idx] == text_file[next_cmp]:
+            total += int(text_file[idx])
+
+    return total
 
 
 if __name__ == "__main__":
