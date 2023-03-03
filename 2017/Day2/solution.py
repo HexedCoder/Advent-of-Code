@@ -1,46 +1,35 @@
 def get_input():
-    text_file = open("input", "r").read().split("\n")
+    text_file = [str(l).split('\t') for l in open('input').read().split('\n')]
+    text_file = [list(map(int, line)) for line in text_file]
     return text_file
 
 
 def main():
     text_file = get_input()
 
-    part_one(text_file)
-    part_two(text_file)
+    total = part_one(text_file)
+    print("Part 1:", total)
+    total = part_two(text_file)
+    print("Part 2:", total)
 
 
 def part_one(text_file):
-    nums = []
-    total = []
+    total = 0
 
     for line in text_file:
-        line = line.split("\t")
-        for num in line:
-            nums.append(int(num))
-        total.append(max(nums) - min(nums))
-        nums = []
-    print("Part 1:", sum(total))
+        total += max(line) - min(line)
+    return total
 
 
 def part_two(text_file):
-    nums = []
-    total = []
+    total = 0
 
-    for line in text_file:
-        line = line.split("\t")
-        for num in line:
-            nums.append(int(num))
-        nums.sort(reverse=True)
-        for num in nums:
-            for check in nums:
-                if num != check:
-                    if num % check == 0:
-                        total.append(int(num / check))
-                        break
-        nums = []
+    for list_ in text_file:
 
-    print("Part 2:", sum(total))
+        total += sum([check // num for check in list_ for num in list_ if
+                      check != num and check % num == 0])
+
+    return total
 
 
 if __name__ == "__main__":
