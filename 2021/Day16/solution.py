@@ -21,10 +21,10 @@ def main():
 
 def part_one(string, idx):
     version = int(string[idx: idx + 3], 2)
-    type = string[idx + 3: idx + 6]
+    p_type = string[idx + 3: idx + 6]
     idx += 6
 
-    if '100' == type:
+    if '100' == p_type:
         while True:
             idx += 5
             if string[idx - 5] == '0':
@@ -81,25 +81,25 @@ def part_two(string, idx):
                 values.append(ret)
 
     if type == 0:
-        version = sum(values)
+        packet_value = sum(values)
     elif type == 1:
-        version = 1
+        packet_value = 1
         for num in values:
-            version *= num
+            packet_value *= num
     elif type == 2:
-        version = min(values)
+        packet_value = min(values)
     elif type == 3:
-        version = max(values)
+        packet_value = max(values)
     elif type == 4:
-        version = values
+        packet_value = values
     elif type == 5:
-        version = values[0] > values[1]
+        packet_value = values[0] > values[1]
     elif type == 6:
-        version = values[0] < values[1]
+        packet_value = values[0] < values[1]
     else:
-        version = values[0] == values[1]
+        packet_value = values[0] == values[1]
 
-    return idx, version
+    return idx, packet_value
 
 
 if __name__ == "__main__":
