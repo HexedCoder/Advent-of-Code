@@ -1,7 +1,8 @@
 import math
 
+
 def get_input():
-    file_input = open("s_input").read()
+    file_input = open("input").read()
 
     string = ''
     for letter in file_input:
@@ -58,7 +59,7 @@ def part_two(string, idx):
         num = 0
 
         while True:
-            num = 16*num + int(string[idx + 1:idx + 5], 2)
+            num = 16 * num + int(string[idx + 1:idx + 5], 2)
             idx += 5
             if string[idx - 5] == '0':
                 break
