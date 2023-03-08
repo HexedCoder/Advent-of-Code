@@ -1,6 +1,3 @@
-import math
-
-
 def get_input():
     file_input = open("input").read()
 
@@ -83,12 +80,12 @@ def part_two(string, idx):
                 idx, ret = part_two(string, idx)
                 values.append(ret)
 
-    version = 0
-
     if type == 0:
         version = sum(values)
     elif type == 1:
-        version = math.prod(values)
+        version = 1
+        for num in values:
+            version *= num
     elif type == 2:
         version = min(values)
     elif type == 3:
@@ -96,11 +93,11 @@ def part_two(string, idx):
     elif type == 4:
         version = values
     elif type == 5:
-        version = 1 if values[0] > values[1] else 0
+        version = values[0] > values[1]
     elif type == 6:
-        version = 1 if values[0] < values[1] else 0
+        version = values[0] < values[1]
     else:
-        version = 1 if values[0] == values[1] else 0
+        version = values[0] == values[1]
 
     return idx, version
 
