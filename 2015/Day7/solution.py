@@ -14,6 +14,10 @@ def get_input():
             ops = ops.strip().split()
             op_list.append([ops, var])
 
+    for line in op_list:
+        if line[1] not in var_dict.keys() and not line[1].isdigit():
+            var_dict[line[1]] = 0
+
     return op_list, var_dict
 
 
@@ -23,66 +27,48 @@ def main():
     result = part_one(op_list, var_dict)
     print(f'Part One: {result}')
 
-    result = part_two(op_list, var_dict)
+    result = part_two(op_list, var_dict, result)
     print(f'Part Two: {result}')
 
 
 def part_one(op_list, var_dict):
+    for line in op_list:
+        if line[1] not in var_dict.keys() and not line[1].isdigit():
+            var_dict[line[1]] = 0
 
-    curr = ''
-    while 'a' not in var_dict:
-        try:
-            for idx, cmd in enumerate(op_list):
-                curr = cmd
-                print(cmd)
+    for _ in range(25):
+        for cmd in op_list:
+            if 1 == len(cmd[0]):
+                if cmd[0][0] not in var_dict:
+                    var_dict[cmd[0][0]] = 0
+                var_dict[cmd[1]] = var_dict[cmd[0][0]]
 
-                if 1 == len(cmd[0]):
-                    ops = cmd[0][0]
-                    if ops not in var_dict:
-                        var_dict[ops] = 0
-                    var_dict[cmd[1]] = var_dict[ops]
-                    print(ops, var_dict[ops])
-                    raise SyntaxError
+            elif 3 == len(cmd[0]):
+                val_1 = int(cmd[0][0]) if cmd[0][0].isdigit() else var_dict[cmd[0][0]]
+                val_2 = int(cmd[0][2]) if cmd[0][2].isdigit() else var_dict[cmd[0][2]]
 
-                else:
+                if cmd[0][-2] == 'AND':
+                    var_dict[cmd[1]] = val_1 & val_2
+                if cmd[0][-2] == 'OR':
+                    var_dict[cmd[1]] = val_1 | val_2
 
-                    if cmd[0][-2] == 'AND':
-                        if cmd[0][0] in  var_dict and cmd[0][2] in var_dict:
-                            var_dict[cmd[1]] = var_dict[cmd[0][0]] & var_dict[cmd[0][2]]
-                            raise SyntaxError
-                    if cmd[0][-2] == 'OR':
-                        if cmd[0][0] in var_dict and cmd[0][2] in var_dict:
-                            var_dict[cmd[1]] = var_dict[cmd[0][0]] | var_dict[cmd[0][2]]
-                            raise SyntaxError
-                    if cmd[0][-2] ==  'LSHIFT':
-                        if cmd[0][0] in var_dict and cmd[0][2] in var_dict:
-                            var_dict[cmd[1]] = var_dict[cmd[0][0]] << int(cmd[0][2])
-                            raise SyntaxError
-                    if cmd[0][-2] == 'RSHIFT':
-                        if cmd[0][0] in var_dict and cmd[0][2] in var_dict:
-                            var_dict[cmd[1]] = var_dict[cmd[0][0]] >> int(cmd[0][2])
-                            raise SyntaxError
-                    if cmd[0][-2] == 'NOT':
-                        if cmd[0][1] in var_dict:
-                            var_dict[cmd[1]] = ~ var_dict[cmd[0][1]]
-                            raise SyntaxError
+                if cmd[0][-2] == 'LSHIFT':
+                    var_dict[cmd[1]] = val_1 << val_2
 
-        except KeyError:
-            item = op_list.index(curr)
-            to_add = op_list.pop(item)
-            op_list.append(to_add)
+                if cmd[0][-2] == 'RSHIFT':
+                    var_dict[cmd[1]] = val_1 >> val_2
 
-        except SyntaxError:
-            print('Removing', curr)
-            item = op_list.index(curr)
-            op_list.pop(item)
-            print(len(op_list))
+            else:
+                if cmd[0][-2] == 'NOT':
+                    var_dict[cmd[1]] = ~var_dict[cmd[0][1]]
 
     return var_dict['a']
 
 
-def part_two(op_list, var_dict):
-    pass
+def part_two(op_list, var_dict, part_two_res):
+    var_dict['b'] = part_two_res
+
+    return part_one(op_list, var_dict)
 
 
 if __name__ == "__main__":
