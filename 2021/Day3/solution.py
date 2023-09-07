@@ -32,25 +32,13 @@ def create_dict(lines):
 
 
 def check_power(count_dict):
-    final_list = []
+    gamma_rate = ''
+    epsilon_rate = ''
     for zero_count in count_dict.values():
-        if zero_count > 500:
-            final_list.append(0)
-        else:
-            final_list.append(1)
+        gamma_rate += '1' if zero_count > 500 else '0'
+        epsilon_rate += '0' if zero_count > 500 else '1'
 
-    gamma_rate = ""
-
-    for number in final_list:
-        gamma_rate = f"{gamma_rate}{number}"
-
-    epsilon_rate = ''.join('1' if x == '0' else '0' for x in gamma_rate)
-
-    gamma_rate = int(gamma_rate, base=2)
-    epsilon_rate = int(epsilon_rate, base=2)
-    power_consumption = gamma_rate * epsilon_rate
-
-    return power_consumption
+    return int(gamma_rate, base=2) * int(epsilon_rate, base=2)
 
 
 def oxygen_generator_check():
@@ -61,12 +49,10 @@ def oxygen_generator_check():
 
         for _line in oxygen_lines:
 
-            if _line[index_] == "0":
-                low_list.append(_line)
-            else:
-                high_list.append(_line)
+            low_list.append(_line) if _line[index_] == "0" \
+                else high_list.append(_line)
 
-        if len(low_list) <= len(high_list):
+        if len(low_list) < len(high_list) + 1:
             for low_num in low_list:
                 oxygen_lines.pop(oxygen_lines.index(low_num))
         else:
@@ -77,7 +63,6 @@ def oxygen_generator_check():
 
         if len(oxygen_lines) == 1:
             oxygen_generator_rating = int(oxygen_lines[0], base=2)
-            # print(f'{oxygen_generator_rating = }')
             break
     return oxygen_generator_rating
 
