@@ -10,14 +10,8 @@ def get_input():
     list_int_input = []
 
     for line in lines_input:
-
-        line = line.replace("\n", "")
-        line_int = []
-
-        for num in line:
-            num = int(num)
-            line_int.append(num)
-        list_int_input.append(line_int)
+        line = list(map(int, line.replace("\n", "")))
+        list_int_input.append([num for num in line])
 
     return list_int_input
 
@@ -25,124 +19,46 @@ def get_input():
 def find_lows(height_list):
     basin_coord = []
     basin_nums = []
-    y = 0
-    for each_line in height_list:
-        x = 0
-        for number in each_line:
-            if x == 0:
-                if y == 0:
-                    if height_list[y][x + 1] > number and \
-                            height_list[y + 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
 
-                elif y < len(height_list) - 1:
+    for y, row in enumerate(height_list):
+        for x, number in enumerate(row):
+            neighbors = [
+                (x - 1, y), (x + 1, y),  # Left and right
+                (x, y - 1), (x, y + 1)   # Above and below
+            ]
 
-                    if height_list[y][x + 1] > number and \
-                            height_list[y - 1][x] > number and \
-                            height_list[y + 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
-                else:
+            valid_basin = True
+            for neighbor_x, neighbor_y in neighbors:
 
-                    if height_list[y][x + 1] > number and \
-                            height_list[y - 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
+                if 0 <= neighbor_x < len(row) and 0 <= neighbor_y < len(height_list):
+                    if height_list[neighbor_y][neighbor_x] <= number:
+                        valid_basin = False
+                        break
 
-            elif x < len(each_line) - 1:
+            if valid_basin:
+                basin_coord.append((x, y))
+                basin_nums.append(number + 1)
 
-                if y == 0:
-                    if height_list[y][x - 1] > number and \
-                            height_list[y][x + 1] > number and \
-                            height_list[y + 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
-
-                elif y < len(height_list) - 1:
-                    if height_list[y][x - 1] > number and \
-                            height_list[y][x + 1] > number and \
-                            height_list[y - 1][x] > number and \
-                            height_list[y + 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
-
-                elif y == len(height_list) - 1:
-                    if height_list[y][x - 1] > number and \
-                            height_list[y][x + 1] > number and \
-                            height_list[y - 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
-
-            else:
-                if y == 0:
-                    if height_list[y][x - 1] > number and \
-                            height_list[y + 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
-
-                elif y < len(height_list) - 1:
-                    if height_list[y][x - 1] > number and \
-                            height_list[y - 1][x] > number and \
-                            height_list[y + 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
-
-                elif y == len(height_list) - 1:
-                    if height_list[y][x - 1] > number and \
-                            height_list[y - 1][x] > number:
-                        basin_coord.append((x, y))
-                        basin_nums.append(number + 1)
-
-            x += 1
-        y += 1
-
-    return basin_coord, basin_nums
+    return basin_coord, sum(basin_nums)
 
 
 def check(x, y):
     global width, bottom, _map
     points = []
-    x_temp = x
-    y_temp = y
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
-    while x_temp < width:
-        x_temp += 1
-        if _map[y_temp][x_temp] != 9:
-            points.append((x_temp, y_temp))
-        else:
-            x_temp -= 1
-            break
+    for dir_x, dir_y in directions:
+        x_temp = x + dir_x
+        y_temp = y + dir_y
+            
+        while x_temp <= width and x_temp >= 0 and y_temp >= 0 and y_temp <= bottom:
+            if _map[y_temp][x_temp] != 9:
+                points.append((x_temp, y_temp))
+            else:
+                break
 
-    x_temp = x
-    y_temp = y
-    while x_temp > 0:
-        x_temp -= 1
-        if _map[y_temp][x_temp] != 9:
-            points.append((x_temp, y_temp))
-        else:
-            x_temp += 1
-            break
-
-    x_temp = x
-    y_temp = y
-    while y_temp > 0:
-        y_temp -= 1
-        if _map[y_temp][x_temp] != 9:
-            points.append((x_temp, y_temp))
-        else:
-            y_temp += 1
-            break
-
-    x_temp = x
-    y_temp = y
-    while y_temp < bottom:
-        y_temp += 1
-        if _map[y_temp][x_temp] != 9:
-            points.append((x_temp, y_temp))
-        else:
-            y_temp -= 1
-            break
+            x_temp += dir_x
+            y_temp += dir_y
 
     return points
 
@@ -154,13 +70,17 @@ def basin_size(height_list, map_):
     _map = map_
     basin_sizes = []
 
-    index = 0
-    for basin in height_list:
+    for index, coord in enumerate(height_list):
+        x = coord[0]
+        y = coord[1]
         size = 0
-        result = check(basin[0], basin[1])
+
+        result = check(x, y)
         size += len(result)
-        for point in result:
-            new_result = check(point[0], point[1])
+
+        for neighbor_x, neighbor_y in result:
+            new_result = check(neighbor_x, neighbor_y)
+
             for point in new_result:
                 if point not in result:
                     result.append(point)
@@ -181,7 +101,7 @@ def main():
 
     product = top_basin_sizes[0] * top_basin_sizes[1] * top_basin_sizes[2]
 
-    print("Part 1:", sum(basin_nums))
+    print("Part 1:", basin_nums)
     print("Part 2:", product)
 
 
