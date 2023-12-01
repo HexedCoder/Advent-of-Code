@@ -1,22 +1,3 @@
-def convert_words(input_file):
-    conversions = {"one": "1e", "two": "2o", "three": "3e", "four": "4r", "five": "5e", "six": "6x", "seven": "7n", "eight": "8t", "nine": "9e"}
-
-    while True:
-        min_idx = 99
-        rep_word = ""
-        for word, num in conversions.items():
-            idx = input_file.find(word)
-            if -1 < idx < min_idx:
-                min_idx = idx
-                rep_word = word
-        if min_idx != 99:
-            input_file = input_file.replace(rep_word, conversions[rep_word])
-        else:
-            break
-
-    return input_file
-
-
 def get_input():
     with open("input") as file_input:
         puzzle_input = file_input.read().split("\n")
@@ -29,28 +10,14 @@ def get_input():
 
 
 def part_one(file_input):
-    total = 0
-
     for line in file_input:
-        if line:
-            line = [char for char in line if char.isdigit()]
-            if line:
-                total += int(line[0] + line[-1])
+        print(line)
 
-    return total
+    return 0
 
 
 def part_two(file_input):
-    total = 0
-
-    for line in file_input:
-        if line:
-            line = convert_words(line)
-            line = [char for char in line if char.isdigit()]
-            print(line, int(line[0] + line[-1]))
-            total += int(line[0] + line[-1])
-
-    return total
+    return "In Progress"
 
 
 def main():
