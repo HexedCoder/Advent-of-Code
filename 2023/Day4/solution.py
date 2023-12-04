@@ -27,7 +27,7 @@ def part_two(file_input):
         win, curr = [set(num.split()) for num in line.split('|')]
 
         for num in range(len(win.intersection(curr))):
-            total_cards[idx + num + 1] += 1 * total_cards[idx]
+            total_cards[idx + num + 1] += total_cards[idx]
 
     return sum(total_cards)
 
