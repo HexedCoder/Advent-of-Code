@@ -6,17 +6,23 @@ def get_input():
     for line in puzzle_input:
         if line:
             lines_input.append(list(map(int, line.split()[1:])))
-
     return lines_input
 
 
 def check_wins(time, record):
-    wins = 0
+    start = 0
+    end = 0
     for held in range(time):
         if (time - held) * held > record:
-            wins += 1
+            start = held
+            break
 
-    return wins
+    for held in range(time, 0, -1):
+        if (time - held) * held > record:
+            end = held
+            break
+
+    return end - start + 1
 
 
 def part_one(file_input):
