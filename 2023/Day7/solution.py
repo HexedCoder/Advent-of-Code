@@ -54,13 +54,16 @@ def part_one(file_input):
         if len(set(hand)) == 5:
             hand_lists["high"].append([hand, bid])
 
-    # print(hand_lists)
     idx = 1
-    for hand_list in hand_lists.values():
+    for key, hand_list in hand_lists.items():
+        print(key)
+        print("Before", hand_list)
         hand_list.sort(key=hand_sort_p1)
+        print("After", hand_list)
         for hand in hand_list:
             total_score += hand[1] * idx
             idx += 1
+        print()
     return total_score
 
 
