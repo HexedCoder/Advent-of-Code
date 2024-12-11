@@ -22,7 +22,7 @@ def blink(current_value):
     return [current_value * 2024]
 
 
-def solve(graves_input, num):  
+def solve(graves_input, num):
     for _ in range(num):
         new_graves = {}
         for key, value in graves_input.items():
@@ -31,11 +31,9 @@ def solve(graves_input, num):
                 if val not in new_graves:
                     new_graves[val] = 0
                 new_graves[val] += value
-        graves_input.clear()
-        graves_input.update(new_graves)
+        graves_input = new_graves
 
-    output = sum(graves_input[key] for key in graves_input if graves_input[key] > 0)
-    return output
+    return sum(graves_input.values())
 
 def main():
 
@@ -44,7 +42,7 @@ def main():
     part_1 = solve(graves_dict, 25)
     print(f"Part One:", part_1)
 
-    part_2 = solve(graves_dict, 50)
+    part_2 = solve(graves_dict, 75)
     print(f"Part Two:", part_2)
 
 
