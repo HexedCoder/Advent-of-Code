@@ -1,24 +1,25 @@
 def get_input():
     graves_input = {}
     with open("input") as file_input:
-        for line in file_input:
-            for num in line.split():
-                if num not in graves_input:
-                    graves_input[int(num)] = 0
-                graves_input[int(num)] += 1
+        file_input = file_input.read().split()
 
+    graves_input = {int(num): file_input.count(num) for num in file_input}
     return graves_input
 
 def blink(current_value):
     if current_value == 0:
         return [1]
-    elif len(str(current_value)) % 2 == 0:
-        str_curr = str(current_value)
-        val_1 = int(str_curr[len(str_curr) // 2:])
-        val_2 = int(str_curr[:len(str_curr) // 2])
+    
+    str_curr = str(current_value)
+    length = len(str_curr)
+    
+    if length % 2 == 0:
+        mid = length // 2
+        val_1 = int(str_curr[mid:])
+        val_2 = int(str_curr[:mid])
         return [val_1, val_2]
-    else:
-        return [current_value * 2024]
+    
+    return [current_value * 2024]
 
 
 def solve(graves_input, num):  
