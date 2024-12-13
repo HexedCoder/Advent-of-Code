@@ -2,8 +2,9 @@ def get_input():
     graves_input = {}
     with open("input") as file_input:
         file_input = file_input.read().split()
-
+    
     graves_input = {int(num): file_input.count(num) for num in file_input}
+
     return graves_input
 
 def blink(current_value):
@@ -31,7 +32,8 @@ def solve(graves_input, num):
                 if val not in new_graves:
                     new_graves[val] = 0
                 new_graves[val] += value
-        graves_input = new_graves
+        graves_input.clear()
+        graves_input.update(new_graves)
 
     return sum(graves_input.values())
 
@@ -42,7 +44,7 @@ def main():
     part_1 = solve(graves_dict, 25)
     print(f"Part One:", part_1)
 
-    part_2 = solve(graves_dict, 75)
+    part_2 = solve(graves_dict, 50)
     print(f"Part Two:", part_2)
 
 
