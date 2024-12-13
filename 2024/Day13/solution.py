@@ -23,9 +23,6 @@ def part_one(games_info):
         B_x, B_y = B
         Sol_x, Sol_y = Sol
 
-        # 94A + 22B = 8400
-        # 34A + 67B = 5400
-
         min_cost = None
         best_a, best_b = None, None
 
@@ -42,7 +39,7 @@ def part_one(games_info):
 
     return output
 
-def part_two(games_info):
+def solve(games_info, p2):
     output = 0
 
     for game in games_info:
@@ -50,8 +47,10 @@ def part_two(games_info):
         A_1, A_2 = A
         B_1, B_2 = B
         C_1, C_2 = Sol
-        C_1 += 10000000000000
-        C_2 += 10000000000000
+
+        if p2:
+            C_1 += 10000000000000
+            C_2 += 10000000000000
 
         v_1 = (C_1 * B_2 - C_2 * B_1) / (A_1 * B_2 - A_2 * B_1)
         v_2 = (C_1 - A_1 * v_1) / B_1
@@ -59,16 +58,16 @@ def part_two(games_info):
         if v_1 % 1 == 0 and v_2 % 1 == 0:
             output += (3 * v_1) + v_2
 
-    return output
+    return int(output)
 
 def main():
 
     games_info = get_input()
 
-    part_1 = part_one(games_info)
+    part_1 = solve(games_info, False)
     print(f"Part One:", part_1)
 
-    part_2 = part_two(games_info)
+    part_2 = solve(games_info, True)
     print(f"Part Two:", part_2)
 
 if __name__ == "__main__":
