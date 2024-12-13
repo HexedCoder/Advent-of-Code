@@ -14,30 +14,6 @@ def get_input():
 
     return games_info
 
-def part_one(games_info):
-    output = 0
-
-    for game in games_info:
-        A, B, Sol = game
-        A_x, A_y = A
-        B_x, B_y = B
-        Sol_x, Sol_y = Sol
-
-        min_cost = None
-        best_a, best_b = None, None
-
-        for a in range(Sol_x // A_x + 1):
-            if (Sol_x - A_x * a) % B_x == 0: # If the numbers reach solution
-                b = (Sol_x - A_x * a) // B_x # Calculate the b number
-                if A_y * a + B_y * b == Sol_y: # Ensure solution reached
-                    cost = 3 * a + b
-                    if not min_cost or cost < min_cost:
-                        min_cost = cost
-                        best_a, best_b = a, b
-        if min_cost:
-            output += best_a * 3 + best_b
-
-    return output
 
 def solve(games_info, p2):
     output = 0
