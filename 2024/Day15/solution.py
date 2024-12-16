@@ -72,7 +72,6 @@ def part_one(maze, directions):
                     start_pos = (i, j)
                     break
 
-    block = "#"
     path = "."
     character = "@"
 
@@ -112,7 +111,6 @@ def part_two(maze, directions):
                     start_pos = (i, j)
                     break
 
-    block = "#"
     path = "."
     character = "@"
 
