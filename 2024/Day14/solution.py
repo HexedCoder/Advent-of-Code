@@ -38,13 +38,14 @@ def part_one(robots):
 
 
 def part_two(robots):
-    output = 1
-    locations = [0, 0, 0, 0]
-
+    output = 0
     maze_height, maze_width  = 103, 101
 
     curr = 'X'
     for num in range(0, 1000000):
+        if output != 0:
+            break
+
         maze = [['.' for _ in range(maze_width)] for _ in range(maze_height)]
         for robot in robots:
             curr_pos, curr_vel = robot
@@ -61,17 +62,10 @@ def part_two(robots):
                 break
 
         if valid:
-            print("\033[2J")
-            print(num)
-            for m in maze:
-                print("".join(m))
-            print("\n")
-            print(num)
-            if input().upper() == 'Y':
-                output = num
-                break
+            output = num
+            break
 
-    return output
+    return output, maze
 
 def main():
 
@@ -80,8 +74,11 @@ def main():
     part_1 = part_one(robots)
     print(f"Part One:", part_1)
 
-    part_2 = part_two(robots)
+    part_2, maze = part_two(robots)
     print(f"Part Two:", part_2)
+
+    for m in maze:
+        print("".join(m))
 
 if __name__ == "__main__":
     try:
