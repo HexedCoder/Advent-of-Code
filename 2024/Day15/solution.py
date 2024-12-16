@@ -6,55 +6,26 @@ def get_input():
 
     maze_2 = []
     for line in maze_input.split("\n"):
-        line = list(line)
-        line = [char for char in line for _ in range(2)]
-        line = list("".join(line).replace("@@", "@.").replace("OO", "[]"))
-
-        maze_2.append(line)
-    directions = list(direction_input)
+        expanded_line = [char for char in line for _ in range(2)]
+        expanded_line = "".join(expanded_line).replace("@@", "@.").replace("OO", "[]")
+        maze_2.append(list(expanded_line))
+    directions = list(direction_input.replace("\n", ""))
 
     return maze, maze_2, directions
 
 def get_edges(position, direction, maze):
     x, y, = position
-    if direction == "^":
-        edges = []
-        while x >= 0:
-            x -= 1
-            if maze[x][y] == "#":
-                break
-            edges.append((x, y))
-            if maze[x][y] == ".":
-                break
-    elif direction == "v":
-        edges = []
-        while x < len(maze):
-            x += 1
-            if maze[x][y] == "#":
-                break
-            edges.append((x, y))
-            if maze[x][y] == '.':
-                break
-    elif direction == "<":
-        edges = []
-        while y >= 0:
-            y -= 1
-            if maze[x][y] == "#":
-                break
-            edges.append((x, y))
-            if maze[x][y] == '.':
-                break
-    elif direction == ">":
-        edges = []
-        while y < len(maze[0]):
-            y += 1
-            if maze[x][y] == "#":
-                break
-            edges.append((x, y))
-            if maze[x][y] == '.':
-                break
-    else:
-        return []
+    edges = []
+    dx, dy = {"^": (-1, 0), "v": (1, 0), "<": (0, -1), ">": (0, 1)}[direction]
+    while 0 <= x < len(maze) and 0 <= y < len(maze[0]):
+        x += dx
+        y += dy
+        if maze[x][y] == "#":
+            break
+        edges.append((x, y))
+        if maze[x][y] == ".":
+            break
+
     if any(maze[px][py] == '.' for px, py in edges):
         return edges
     else:
@@ -66,31 +37,26 @@ def part_one(maze, directions):
 
     start_pos = None
     for i, row in enumerate(maze):
-        if not start_pos:
-            for j, cell in enumerate(row):
-                if cell == "@":
-                    start_pos = (i, j)
-                    break
-
-    path = "."
-    character = "@"
+        for j, cell in enumerate(row):
+            if cell == "@":
+                start_pos = (i, j)
+                break
 
     x, y, = start_pos
-    direction_dict = {"^": (x - 1, y), "v": (x + 1, y), "<": (x, y - 1), ">": (x, y + 1)}
-
     for direction in directions:
         push_list = get_edges((x, y), direction, maze)
-        if push_list:
-            for push in push_list:      
-                px, py = push
-                maze[px][py] = "O"
+        
+        for push in push_list:      
+            px, py = push
+            maze[px][py] = "O"
             
-            maze[x][y] = path
+        if push_list:
+            maze[x][y] = '.'
 
-            x, y = direction_dict[direction]
             direction_dict = {"^": (x - 1, y), "v": (x + 1, y), "<": (x, y - 1), ">": (x, y + 1)}
+            x, y = direction_dict[direction]
 
-            maze[x][y] = character
+            maze[x][y] = '@'
 
     for y in range(len(maze)):
         for x in range(len(maze[0])):
@@ -105,57 +71,38 @@ def part_two(maze, directions):
 
     start_pos = None
     for i, row in enumerate(maze):
-        if not start_pos:
-            for j, cell in enumerate(row):
+        for j, cell in enumerate(row):
                 if cell == "@":
                     start_pos = (i, j)
                     break
 
-    path = "."
-    character = "@"
-
     x, y, = start_pos
-    direction_dict = {"^": (x - 1, y), "v": (x + 1, y), "<": (x, y - 1), ">": (x, y + 1)}
-
     for direction in directions:
         push_list = get_edges((x, y), direction, maze)
-        if direction == "^" and maze[x - 1][y] != path:
+        if direction == "^" and maze[x - 1][y] != '.':
             for px, py in push_list:
                 if px == '.':
                     continue
 
-                if maze[px][py] == "[":
-                    if (px, py + 1) not in push_list:
-                        new_edges = get_edges((px + 1, py + 1), direction, maze)
+                if maze[px][py] in "[]":
+                    offset = 1 if maze[px][py] == "[" else -1
+                    if (px, py + offset) not in push_list:
+                        new_edges = get_edges((px + 1, py + offset), direction, maze)
                         if not new_edges or new_edges in push_list:
                             push_list.clear()
                         else:
                             push_list.extend([('.', '.')])
                             push_list.extend(new_edges)
-                elif maze[px][py] == "]":
-                    if (px, py - 1) not in push_list:
-                        new_edges = get_edges((px + 1, py - 1), direction, maze)
-                        if not new_edges or new_edges in push_list:
-                            push_list.clear()
-                        else:
-                            push_list.extend([('.', '.')])
-                            push_list.extend(new_edges)
-        elif direction == "v" and maze[x + 1][y] != path:
+
+        elif direction == "v" and maze[x + 1][y] != '.':
             for px, py in push_list:
                 if px == '.':
                     continue
 
-                if maze[px][py] == "[":
-                    if (px, py + 1) not in push_list:
-                        new_edges = get_edges((px - 1, py + 1), direction, maze)
-                        if not new_edges or new_edges in push_list:
-                            push_list.clear()
-                        else:
-                            push_list.extend([('.', '.')])
-                            push_list.extend(new_edges)
-                elif maze[px][py] == "]":
-                    if (px, py - 1) not in push_list:
-                        new_edges = get_edges((px - 1, py - 1), direction, maze)
+                if maze[px][py] in "[]":
+                    offset = 1 if maze[px][py] == "[" else -1
+                    if (px, py + offset) not in push_list:
+                        new_edges = get_edges((px - 1, py + offset), direction, maze)
                         if not new_edges or new_edges in push_list:
                             push_list.clear()
                         else:
@@ -163,25 +110,24 @@ def part_two(maze, directions):
                             push_list.extend(new_edges)
 
         if push_list:
-            for i in range(len(push_list) - 1, 0, -1):
+            i = len(push_list) - 1
+            while i > 0:
                 px, py = push_list[i]
                 nx, ny = push_list[i - 1]
 
-                try:
+                if nx == '.':
+                    maze[px][py] = '.'
+                    i -= 1
+                else:
                     maze[px][py] = maze[nx][ny]
-                except TypeError:
-                    try:                        
-                        maze[nx][ny] = path   
-                    except TypeError:
-                        maze[px][py] = path   
-                    i -= 1     
-                    continue
+                
+                i -= 1
 
-            maze[x][y] = path
-            x, y = direction_dict[direction]
+            maze[x][y] = '.'
             direction_dict = {"^": (x - 1, y), "v": (x + 1, y), "<": (x, y - 1), ">": (x, y + 1)}
+            x, y = direction_dict[direction]
 
-            maze[x][y] = character
+            maze[x][y] = '@'
 
     for y in range(len(maze)):
         for x in range(len(maze[0])):

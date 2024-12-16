@@ -20,13 +20,8 @@ def part_one(robots):
         ch_x = (curr_pos[0] + curr_vel[0] * 100) % maze_width
         ch_y = (curr_pos[1] + curr_vel[1] * 100) % maze_height
 
-        idx = 0
-        if ch_x > maze_width // 2:
-            idx += 1
-        if ch_y > maze_height // 2:
-            idx += 2
-
         if ch_x != maze_width // 2 and ch_y != maze_height // 2:
+            idx = (ch_x > maze_width // 2) + 2 * (ch_y > maze_height // 2)
             locations[idx] += 1
 
     for loc in locations:
@@ -40,9 +35,6 @@ def part_two(robots):
 
     curr = 'X'
     for num in range(0, 1000000):
-        if output != 0:
-            break
-
         maze = [['.' for _ in range(maze_width)] for _ in range(maze_height)]
         for robot in robots:
             curr_pos, curr_vel = robot
