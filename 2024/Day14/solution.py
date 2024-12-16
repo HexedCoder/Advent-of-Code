@@ -1,6 +1,3 @@
-import time
-# < 7727
-
 def get_input():
     with open("input") as file_input:
         file_input = file_input.read().split("\n")
