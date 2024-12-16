@@ -57,7 +57,7 @@ def part_two(robots):
 
         valid = False
         for m in maze:
-            if "XXXXXXXX" in "".join(m):
+            if "XXXXXXXXXXXX" in "".join(m):
                 valid = True
                 break
 
