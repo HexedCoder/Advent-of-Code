@@ -60,10 +60,10 @@ def solve(input_data):
             sequence = tuple(numbers[i:i + 4])
             sequence_counts[sequence] += 1
 
-    sequence_counts = {k: v for k, v in sequence_counts.items() if v > 200}
+    sequence_counts = {k: v for k, v in sequence_counts.items() if v > 150}
 
     part_2 = 0
-    for idx, sequence in enumerate(sequence_counts):
+    for sequence in sequence_counts:
         current_value = 0
 
         for series, results in secret_series:
