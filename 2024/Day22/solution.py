@@ -76,7 +76,7 @@ def solve(input_data):
                     break
                 
             if current_value > part_2:
-                print(f"{idx} New max value: {current_value}")
+                print(f"{current_value = }", end="\r")
                 part_2 = current_value
 
     return part_1, part_2
