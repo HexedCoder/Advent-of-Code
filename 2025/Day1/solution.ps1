@@ -42,7 +42,7 @@ function PartTwo {
 
         # Calculate how many 100-boundaries were crossed, PowerShell's trash modulo
         $totalCrossings = [math]::Floor($($prev + $steps) / 100)
-        $zeroCrossings = if ($totalCrossings -ge 0) { $totalCrossings } else { -$totalCrossings }
+        $zeroCrossings = $totalCrossings -ge 0 ? $totalCrossings : -$totalCrossings
 
         # Don't count when we started on zero
         if (($prev % 100 -eq 0) -and ($totalCrossings -lt 0)) {
