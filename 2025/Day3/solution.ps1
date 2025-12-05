@@ -1,5 +1,4 @@
-$input = ".\input"
-$data = Get-Content -Path $input
+$data = Get-Content -Path "input"
 
 function Get-Highest {
     param(
@@ -7,8 +6,6 @@ function Get-Highest {
         [int]$Idx
     )
 
-    # Write-Host "idx: $Idx -> $subString"
-   
     $retIdx = 0
     $highest = 0
     $strLen = $subString.Length
